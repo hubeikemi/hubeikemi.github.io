@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 8.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="CF2167F题意 给定一棵树和参数 k 定义集合$S_r$：以点 r 作为根，考虑该树的每一组 k 个不同节点得到的LCA集合 要求计算 $\sum_r |S_r|$  本题是思维题，与LCA的求法无关，先看官方的AC码吧 AC码123456789101112131415161718192021222324252627282930313233343536373839404142434445464">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CF2167F">
+<meta property="og:url" content="http://example.com/2025/12/17/CF2167F/index.html">
+<meta property="og:site_name" content="hubeikemi的个人博客">
+<meta property="og:description" content="CF2167F题意 给定一棵树和参数 k 定义集合$S_r$：以点 r 作为根，考虑该树的每一组 k 个不同节点得到的LCA集合 要求计算 $\sum_r |S_r|$  本题是思维题，与LCA的求法无关，先看官方的AC码吧 AC码123456789101112131415161718192021222324252627282930313233343536373839404142434445464">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-12-17T07:06:33.000Z">
+<meta property="article:modified_time" content="2025-12-17T07:15:57.234Z">
+<meta property="article:author" content="DMY">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2025/12/17/CF2167F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CF2167F | hubeikemi的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">hubeikemi的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/17/CF2167F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="DMY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hubeikemi的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CF2167F
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-12-17 15:06:33 / 修改时间：15:15:57" itemprop="dateCreated datePublished" datetime="2025-12-17T15:06:33+08:00">2025-12-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/solutions/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="CF2167F"><a href="#CF2167F" class="headerlink" title="CF2167F"></a><a target="_blank" rel="noopener" href="https://codeforces.com/contest/2167/problem/F">CF2167F</a></h1><h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><ul>
+<li>给定一棵树和参数 k</li>
+<li>定义集合$S_r$：以点 r 作为根，考虑该树的每一组 k 个不同节点得到的LCA集合</li>
+<li>要求计算 $\sum_r |S_r|$</li>
+</ul>
+<p>本题是思维题，与LCA的求法无关，先看官方的AC码吧</p>
+<h2 id="AC码"><a href="#AC码" class="headerlink" title="AC码"></a>AC码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> ll = <span class="type">long</span> <span class="type">long</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> n, k;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; k;</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">a</span>(n + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="type">int</span> u, v;</span><br><span class="line">        cin &gt;&gt; u &gt;&gt; v;</span><br><span class="line">        a[u].<span class="built_in">push_back</span>(v);</span><br><span class="line">        a[v].<span class="built_in">push_back</span>(u);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//首先是建树，没什么好说的。</span></span><br><span class="line">    </span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">sz</span><span class="params">(n + <span class="number">1</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">    <span class="keyword">auto</span> dfs = [&amp;] (<span class="keyword">auto</span> &amp;dfs, <span class="type">int</span> v, <span class="type">int</span> p) -&gt; <span class="type">void</span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> u : a[v]) &#123;</span><br><span class="line">            <span class="keyword">if</span> (u != p) &#123;</span><br><span class="line">                <span class="built_in">dfs</span>(dfs, u, v);</span><br><span class="line">                sz[v] += sz[u];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">dfs</span>(dfs, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里dfs是在求以i为节点的子数结点个数（包括i自己），结果存在sz[i]中。</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//你要问了：树的根不是在变吗，树的结构也在变啊！为什么可以确定子树呐？ </span></span><br><span class="line">    <span class="comment">//后面就知道了，是为了方便分块。</span></span><br><span class="line"></span><br><span class="line">    ll ans = <span class="number">0</span>; </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (n - sz[i] &gt;= k) ans += sz[i]; </span><br><span class="line">        <span class="keyword">if</span> (sz[i] &gt;= k) ans += n - sz[i];</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; ans + n &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//最重要的一步，单拎出来讲。</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> t;</span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    <span class="keyword">while</span> (t--) &#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ll ans = <span class="number">0</span>; </span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (n - sz[i] &gt;= k) ans += sz[i]; </span><br><span class="line">    <span class="keyword">if</span> (sz[i] &gt;= k) ans += n - sz[i];</span><br><span class="line">&#125;</span><br><span class="line">cout &lt;&lt; ans + n &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>我们定义 <strong>(r, v): 以r为根时，存在一种k-集合，使得v是这k个节点的LCA</strong> 。<br>那么，这里的ans加的就是(r, v)的个数，只不过：<br><code>这里的 i 并不代表 r</code>！</p>
+<p>我们来看第三个样例</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">默认以 1 为 DFS 根：</span><br><span class="line"></span><br><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   3</span><br><span class="line"> / \   \</span><br><span class="line">4   5   6</span><br><span class="line"></span><br><span class="line">sz[1] = 6,</span><br><span class="line">sz[2] = 3,</span><br><span class="line">sz[3] = 2,</span><br><span class="line">sz[4] = 1,</span><br><span class="line">sz[5] = 1,</span><br><span class="line">sz[6] = 1;</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>r</th>
+<th>S_r</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>{1, 2}</td>
+</tr>
+<tr>
+<td>2</td>
+<td>{1, 2}</td>
+</tr>
+<tr>
+<td>3</td>
+<td>{1, 2, 3}</td>
+</tr>
+<tr>
+<td>4</td>
+<td>{1, 2, 4}</td>
+</tr>
+<tr>
+<td>5</td>
+<td>{1, 2, 5}</td>
+</tr>
+<tr>
+<td>6</td>
+<td>{1, 2, 3, 6}</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>所以所有 (r, v) 对一共 17 个：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">r=1 : (1,1), (1,2)</span><br><span class="line">r=2 : (2,1), (2,2)</span><br><span class="line">r=3 : (3,1), (3,2), (3,3)</span><br><span class="line">r=4 : (4,1), (4,2), (4,4)</span><br><span class="line">r=5 : (5,1), (5,2), (5,5)</span><br><span class="line">r=6 : (6,1), (6,2), (6,3), (6,6)</span><br></pre></td></tr></table></figure>
+<p>样例模完，我们来看代码如何实现：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ans = <span class="number">0</span>；</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (n - sz[i] &gt;= k) ans += sz[i]; </span><br><span class="line">    <span class="keyword">if</span> (sz[i] &gt;= k) ans += n - sz[i];</span><br><span class="line">&#125;</span><br><span class="line">最后：ans += n;</span><br></pre></td></tr></table></figure></p>
+<h3 id="i-1"><a href="#i-1" class="headerlink" title="i = 1"></a>i = 1</h3><p>n - sz[1] = 0 &lt; 3 </p>
+<p>sz[1] = 6 &gt;= 3 ✅ ans += 0</p>
+<p>这一轮循环没加任何东西，但别急，1 的 (r=1, v=1) 在最后 +n 里。(r=1, v =2)呢？在后面。</p>
+<h3 id="i-2"><a href="#i-2" class="headerlink" title="i = 2"></a>i = 2</h3><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   3</span><br><span class="line"> / \   \</span><br><span class="line">4   5   6</span><br></pre></td></tr></table></figure>
+<h4 id="n-sz-2-3-gt-k"><a href="#n-sz-2-3-gt-k" class="headerlink" title="n - sz[2] = 3 &gt;= k"></a>n - sz[2] = 3 &gt;= k</h4><p>这里指的是：因为结点2的子树外的元素个数 &gt;= k，所以 <strong>以结点2的子树中的任意元素为根时，结点1（2的父结点）绝对可以作为LCA！</strong>(选这k个就行)</p>
+<ul>
+<li>r ∈ 子树(2) = {2,4,5}</li>
+<li>贡献的是：(2,1), (4,1), (5,1), ans += sz[2]</li>
+</ul>
+<h4 id="sz-2-3-gt-k"><a href="#sz-2-3-gt-k" class="headerlink" title="sz[2] = 3 &gt;= k"></a>sz[2] = 3 &gt;= k</h4><p>这里指的是：因为结点2的子树的元素个数 &gt;= k，所以 <strong>以结点2的子树外的任意元素为根时，结点2绝对可以作为LCA！</strong>(选这k个就行)</p>
+<ul>
+<li>r ∈ 子树外 = {1,3,6}</li>
+<li>贡献的是：(1,2), (3,2), (6,2), ans += n - sz[2]</li>
+</ul>
+<h3 id="最后一步：ans-n"><a href="#最后一步：ans-n" class="headerlink" title="最后一步：ans += n"></a>最后一步：ans += n</h3><p>ans += 6</p>
+<p>👉 对应所有 (r = v)：</p>
+<p>(1,1), (2,2), (3,3), (4,4), (5,5), (6,6)</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">最后把所有被加过的对合并</span><br><span class="line"></span><br><span class="line">(1,1)</span><br><span class="line">(1,2)</span><br><span class="line"></span><br><span class="line">(2,1)</span><br><span class="line">(2,2)</span><br><span class="line"></span><br><span class="line">(3,1)</span><br><span class="line">(3,2)</span><br><span class="line">(3,3)</span><br><span class="line"></span><br><span class="line">(4,1)</span><br><span class="line">(4,2)</span><br><span class="line">(4,4)</span><br><span class="line"></span><br><span class="line">(5,1)</span><br><span class="line">(5,2)</span><br><span class="line">(5,5)</span><br><span class="line"></span><br><span class="line">(6,1)</span><br><span class="line">(6,2)</span><br><span class="line">(6,3)</span><br><span class="line">(6,6)</span><br><span class="line"></span><br><span class="line">正好 17 个，一个不少，一个不多</span><br></pre></td></tr></table></figure>
+<h2 id="为什么不会重复？"><a href="#为什么不会重复？" class="headerlink" title="为什么不会重复？"></a>为什么不会重复？</h2><p>首先你在怕什么？</p>
+<p>怕（r，v）被重复记入ans！</p>
+<p>我们证明：任意合法的 (r, v) 不会被重复计入 ans。</p>
+<p>假设相反，存在一对 (r, v)，它在两轮不同的循环 i = x 和 i = y (x ≠ y) 中都被统计。</p>
+<p>假设k = 3，以（2, 1）成立（当以2为根时，1可以作为LCA）为例，由AC码得：</p>
+<p>考虑到子树2（i = 2）,有(2, 1)会是下例情况：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   3</span><br><span class="line">       \</span><br><span class="line">        4</span><br><span class="line"></span><br><span class="line">此时选&#123;1,3,4&#125;可得LCA=1.</span><br></pre></td></tr></table></figure>
+<p>如果考虑到子树3（i = 3），仍有(2, 1)，因为 <strong>(r, v)中，v只会是<code>i自己</code>或<code>i的父结点</code></strong>，所以1是3的父结点，此时要满足（2, 1）成立，则2必须是3的子结点，与上图1是2的父结点矛盾！</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2 - 3</span><br><span class="line">       \</span><br><span class="line">        4</span><br><span class="line"></span><br><span class="line">此时不是树结构！</span><br></pre></td></tr></table></figure>
+<p>得证！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/cpp/" rel="tag"># C++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/12/15/CF2169C/" rel="prev" title="CF2169C">
+      <i class="fa fa-chevron-left"></i> CF2169C
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CF2167F"><span class="nav-number">1.</span> <span class="nav-text">CF2167F</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E6%84%8F"><span class="nav-number">1.1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AC%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">AC码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">核心代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#i-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">i &#x3D; 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#i-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">i &#x3D; 2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#n-sz-2-3-gt-k"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">n - sz[2] &#x3D; 3 &gt;&#x3D; k</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sz-2-3-gt-k"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">sz[2] &#x3D; 3 &gt;&#x3D; k</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%90%8E%E4%B8%80%E6%AD%A5%EF%BC%9Aans-n"><span class="nav-number">1.3.3.</span> <span class="nav-text">最后一步：ans +&#x3D; n</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E4%BC%9A%E9%87%8D%E5%A4%8D%EF%BC%9F"><span class="nav-number">1.4.</span> <span class="nav-text">为什么不会重复？</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">DMY</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DMY</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">21k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">19 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

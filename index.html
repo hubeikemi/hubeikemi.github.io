@@ -187,6 +187,165 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/17/CF2167F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="DMY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hubeikemi的个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/17/CF2167F/" class="post-title-link" itemprop="url">CF2167F</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-12-17 15:06:33 / 修改时间：15:15:57" itemprop="dateCreated datePublished" datetime="2025-12-17T15:06:33+08:00">2025-12-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/solutions/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CF2167F"><a href="#CF2167F" class="headerlink" title="CF2167F"></a><a target="_blank" rel="noopener" href="https://codeforces.com/contest/2167/problem/F">CF2167F</a></h1><h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><ul>
+<li>给定一棵树和参数 k</li>
+<li>定义集合$S_r$：以点 r 作为根，考虑该树的每一组 k 个不同节点得到的LCA集合</li>
+<li>要求计算 $\sum_r |S_r|$</li>
+</ul>
+<p>本题是思维题，与LCA的求法无关，先看官方的AC码吧</p>
+<h2 id="AC码"><a href="#AC码" class="headerlink" title="AC码"></a>AC码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> ll = <span class="type">long</span> <span class="type">long</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> n, k;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; k;</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">a</span>(n + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="type">int</span> u, v;</span><br><span class="line">        cin &gt;&gt; u &gt;&gt; v;</span><br><span class="line">        a[u].<span class="built_in">push_back</span>(v);</span><br><span class="line">        a[v].<span class="built_in">push_back</span>(u);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//首先是建树，没什么好说的。</span></span><br><span class="line">    </span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">sz</span><span class="params">(n + <span class="number">1</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">    <span class="keyword">auto</span> dfs = [&amp;] (<span class="keyword">auto</span> &amp;dfs, <span class="type">int</span> v, <span class="type">int</span> p) -&gt; <span class="type">void</span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> u : a[v]) &#123;</span><br><span class="line">            <span class="keyword">if</span> (u != p) &#123;</span><br><span class="line">                <span class="built_in">dfs</span>(dfs, u, v);</span><br><span class="line">                sz[v] += sz[u];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">dfs</span>(dfs, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里dfs是在求以i为节点的子数结点个数（包括i自己），结果存在sz[i]中。</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//你要问了：树的根不是在变吗，树的结构也在变啊！为什么可以确定子树呐？ </span></span><br><span class="line">    <span class="comment">//后面就知道了，是为了方便分块。</span></span><br><span class="line"></span><br><span class="line">    ll ans = <span class="number">0</span>; </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (n - sz[i] &gt;= k) ans += sz[i]; </span><br><span class="line">        <span class="keyword">if</span> (sz[i] &gt;= k) ans += n - sz[i];</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; ans + n &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//最重要的一步，单拎出来讲。</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> t;</span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    <span class="keyword">while</span> (t--) &#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ll ans = <span class="number">0</span>; </span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (n - sz[i] &gt;= k) ans += sz[i]; </span><br><span class="line">    <span class="keyword">if</span> (sz[i] &gt;= k) ans += n - sz[i];</span><br><span class="line">&#125;</span><br><span class="line">cout &lt;&lt; ans + n &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>我们定义 <strong>(r, v): 以r为根时，存在一种k-集合，使得v是这k个节点的LCA</strong> 。<br>那么，这里的ans加的就是(r, v)的个数，只不过：<br><code>这里的 i 并不代表 r</code>！</p>
+<p>我们来看第三个样例</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">默认以 1 为 DFS 根：</span><br><span class="line"></span><br><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   3</span><br><span class="line"> / \   \</span><br><span class="line">4   5   6</span><br><span class="line"></span><br><span class="line">sz[1] = 6,</span><br><span class="line">sz[2] = 3,</span><br><span class="line">sz[3] = 2,</span><br><span class="line">sz[4] = 1,</span><br><span class="line">sz[5] = 1,</span><br><span class="line">sz[6] = 1;</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>r</th>
+<th>S_r</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>{1, 2}</td>
+</tr>
+<tr>
+<td>2</td>
+<td>{1, 2}</td>
+</tr>
+<tr>
+<td>3</td>
+<td>{1, 2, 3}</td>
+</tr>
+<tr>
+<td>4</td>
+<td>{1, 2, 4}</td>
+</tr>
+<tr>
+<td>5</td>
+<td>{1, 2, 5}</td>
+</tr>
+<tr>
+<td>6</td>
+<td>{1, 2, 3, 6}</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>所以所有 (r, v) 对一共 17 个：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">r=1 : (1,1), (1,2)</span><br><span class="line">r=2 : (2,1), (2,2)</span><br><span class="line">r=3 : (3,1), (3,2), (3,3)</span><br><span class="line">r=4 : (4,1), (4,2), (4,4)</span><br><span class="line">r=5 : (5,1), (5,2), (5,5)</span><br><span class="line">r=6 : (6,1), (6,2), (6,3), (6,6)</span><br></pre></td></tr></table></figure>
+<p>样例模完，我们来看代码如何实现：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ans = <span class="number">0</span>；</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (n - sz[i] &gt;= k) ans += sz[i]; </span><br><span class="line">    <span class="keyword">if</span> (sz[i] &gt;= k) ans += n - sz[i];</span><br><span class="line">&#125;</span><br><span class="line">最后：ans += n;</span><br></pre></td></tr></table></figure></p>
+<h3 id="i-1"><a href="#i-1" class="headerlink" title="i = 1"></a>i = 1</h3><p>n - sz[1] = 0 &lt; 3 </p>
+<p>sz[1] = 6 &gt;= 3 ✅ ans += 0</p>
+<p>这一轮循环没加任何东西，但别急，1 的 (r=1, v=1) 在最后 +n 里。(r=1, v =2)呢？在后面。</p>
+<h3 id="i-2"><a href="#i-2" class="headerlink" title="i = 2"></a>i = 2</h3><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   3</span><br><span class="line"> / \   \</span><br><span class="line">4   5   6</span><br></pre></td></tr></table></figure>
+<h4 id="n-sz-2-3-gt-k"><a href="#n-sz-2-3-gt-k" class="headerlink" title="n - sz[2] = 3 &gt;= k"></a>n - sz[2] = 3 &gt;= k</h4><p>这里指的是：因为结点2的子树外的元素个数 &gt;= k，所以 <strong>以结点2的子树中的任意元素为根时，结点1（2的父结点）绝对可以作为LCA！</strong>(选这k个就行)</p>
+<ul>
+<li>r ∈ 子树(2) = {2,4,5}</li>
+<li>贡献的是：(2,1), (4,1), (5,1), ans += sz[2]</li>
+</ul>
+<h4 id="sz-2-3-gt-k"><a href="#sz-2-3-gt-k" class="headerlink" title="sz[2] = 3 &gt;= k"></a>sz[2] = 3 &gt;= k</h4><p>这里指的是：因为结点2的子树的元素个数 &gt;= k，所以 <strong>以结点2的子树外的任意元素为根时，结点2绝对可以作为LCA！</strong>(选这k个就行)</p>
+<ul>
+<li>r ∈ 子树外 = {1,3,6}</li>
+<li>贡献的是：(1,2), (3,2), (6,2), ans += n - sz[2]</li>
+</ul>
+<h3 id="最后一步：ans-n"><a href="#最后一步：ans-n" class="headerlink" title="最后一步：ans += n"></a>最后一步：ans += n</h3><p>ans += 6</p>
+<p>👉 对应所有 (r = v)：</p>
+<p>(1,1), (2,2), (3,3), (4,4), (5,5), (6,6)</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">最后把所有被加过的对合并</span><br><span class="line"></span><br><span class="line">(1,1)</span><br><span class="line">(1,2)</span><br><span class="line"></span><br><span class="line">(2,1)</span><br><span class="line">(2,2)</span><br><span class="line"></span><br><span class="line">(3,1)</span><br><span class="line">(3,2)</span><br><span class="line">(3,3)</span><br><span class="line"></span><br><span class="line">(4,1)</span><br><span class="line">(4,2)</span><br><span class="line">(4,4)</span><br><span class="line"></span><br><span class="line">(5,1)</span><br><span class="line">(5,2)</span><br><span class="line">(5,5)</span><br><span class="line"></span><br><span class="line">(6,1)</span><br><span class="line">(6,2)</span><br><span class="line">(6,3)</span><br><span class="line">(6,6)</span><br><span class="line"></span><br><span class="line">正好 17 个，一个不少，一个不多</span><br></pre></td></tr></table></figure>
+<h2 id="为什么不会重复？"><a href="#为什么不会重复？" class="headerlink" title="为什么不会重复？"></a>为什么不会重复？</h2><p>首先你在怕什么？</p>
+<p>怕（r，v）被重复记入ans！</p>
+<p>我们证明：任意合法的 (r, v) 不会被重复计入 ans。</p>
+<p>假设相反，存在一对 (r, v)，它在两轮不同的循环 i = x 和 i = y (x ≠ y) 中都被统计。</p>
+<p>假设k = 3，以（2, 1）成立（当以2为根时，1可以作为LCA）为例，由AC码得：</p>
+<p>考虑到子树2（i = 2）,有(2, 1)会是下例情况：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   3</span><br><span class="line">       \</span><br><span class="line">        4</span><br><span class="line"></span><br><span class="line">此时选&#123;1,3,4&#125;可得LCA=1.</span><br></pre></td></tr></table></figure>
+<p>如果考虑到子树3（i = 3），仍有(2, 1)，因为 <strong>(r, v)中，v只会是<code>i自己</code>或<code>i的父结点</code></strong>，所以1是3的父结点，此时要满足（2, 1）成立，则2必须是3的子结点，与上图1是2的父结点矛盾！</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2 - 3</span><br><span class="line">       \</span><br><span class="line">        4</span><br><span class="line"></span><br><span class="line">此时不是树结构！</span><br></pre></td></tr></table></figure>
+<p>得证！</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/15/CF2169C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1236,7 +1395,7 @@ N = N - t \cdot b</script><p>继续进行下一个操作，直到遍历所有操
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1285,12 +1444,12 @@ N = N - t \cdot b</script><p>继续进行下一个操作，直到遍历所有操
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">18k</span>
+    <span title="站点总字数">21k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">17 分钟</span>
+    <span title="站点阅读时长">19 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
